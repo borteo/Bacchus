@@ -12,5 +12,5 @@ const session = new Client.Session(device, storage);
 
 
 exports.login = () => {
-	return Client.Session.create( device, storage, Conf.username, Conf.password );
+	return Client.Session.create( device, storage, currentUser.username, currentUser.password );
 }
