@@ -155,7 +155,7 @@ app.get('/api/instagrammer/:username', actionsController.instagrammer);
 app.get('/api/autolike', actionsController.autolike);
 app.get('/api/autofollow', actionsController.autofollow);
 
-app.post('/api/unfollow', actionsController.unfollow);
+app.get('/api/login-instagram', actionsController.login);
 
 
 app.get('/start-bot', botController.start);

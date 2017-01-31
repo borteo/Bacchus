@@ -6,6 +6,7 @@ import UnfollowComponent from './components/unfollow-component';
 import InstagramUsersComponent from './components/instagram-users-component';
 import FollowFollowersComponent from './components/follow-followers-component';
 import BotComponent from './components/bot-component';
+import InstagramToolsComponent from './components/instagram-tools-component';
 
 
 render(<App />, document.querySelector('.app'));
@@ -15,5 +16,6 @@ render(<LikeFeedComponent />, document.querySelector('.like-feed-component'));
 render(<InstagramUsersComponent />, document.querySelector('.instagram-users-component'));
 render(<FollowFollowersComponent />, document.querySelector('.follow-followers-component'));
 render(<BotComponent />, document.querySelector('.bot-component'));
+render(<UnfollowComponent />, document.querySelector('.unfollow-component'));
 
-render(<UnfollowComponent />, document.querySelector('.unfollow'));
+render(<InstagramToolsComponent />, document.querySelector('.instagram-tools-component'));

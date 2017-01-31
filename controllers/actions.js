@@ -8,6 +8,8 @@ const likeController = require('./like');
 const locationController = require('./location');
 const relationshipsController = require('./relationships');
 const instagramUserController = require('./instagram-user');
+const instagramController = require('./instagram');
+
 const Conf = require('../config/users.js');
 
 // Views
@@ -27,6 +29,15 @@ exports.getUnfollowView = ( req, res ) => {
   
 exports.currentUser = ( req, res, next ) => {
   res.send( Conf.user ); 
+};
+
+exports.login = ( req, res, next ) => {
+  instagramController.login()
+    .then(function(session) {
+      console.log('merda', session );
+      res.send("OKAY");   
+    })
+  ;
 };
 
 exports.instagramUsers = ( req, res, next ) => {
