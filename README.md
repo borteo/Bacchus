@@ -28,3 +28,15 @@ Open 4 tabs:
 
 
 Check kue on: http://localhost:8080/
+
+
+### Milestones
+
+- follow specific user's followers ✅
+- queue manager to delay requests - Done, but implement it everywhere!
+- add Pinterest, Twitter, Facebook and Tumblr API
+- hashtag crawler like location
+
+
+### Nice to have
+- scheduler: add image + text in a folder and then post every day automatically: w/o GUI, just node script.

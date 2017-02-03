@@ -30,6 +30,7 @@ exports.likeMyFeed = () => {
 };
 
 exports.likeUsersMedia = ( users ) => {
+  let counter = 0;
   users.forEach(function( user, index ) {
     console.log('USERID', user.id);
     var feed = new Client.Feed.UserMedia(session, user.id);
@@ -40,11 +41,13 @@ exports.likeUsersMedia = ( users ) => {
         let randomInt = uniqueRandomInts(results.length - 1, 5);
         randomInt.map(function( idx ) {
           // passing the user.id will update the model with `isLiked = true`
-          QueueWorker.addLikesToQueue( results[ idx ], (idx + index), user.id );  
+          QueueWorker.addLikesToQueue( results[ idx ], counter++, user.id );  
         });
+
+        // then follow her
+        QueueWorker.addFollowToQueue( user, counter++, user.id );
       })
     ;
-
   });
 
 };

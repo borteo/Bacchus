@@ -1723,6 +1723,16 @@ var Tools = function (_Component) {
   createClass(Tools, [{
     key: "render",
     value: function render() {
+
+      /*
+          <!button
+                class="btn btn-primary"
+                onClick={ this.props.autofollow }
+              >
+                Autofollow
+              </button>
+      */
+
       return h(
         "div",
         { "class": "form-inline" },
@@ -1741,14 +1751,6 @@ var Tools = function (_Component) {
             onClick: this.props.autolike
           },
           "Autolike"
-        ),
-        h(
-          "button",
-          {
-            "class": "btn btn-primary",
-            onClick: this.props.autofollow
-          },
-          "Autofollow"
         )
       );
     }

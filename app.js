@@ -156,7 +156,7 @@ app.get('/api/autolike', actionsController.autolike);
 app.get('/api/autofollow', actionsController.autofollow);
 
 app.get('/api/login-instagram', actionsController.login);
-
+app.post('/api/unfollow', actionsController.unfollow);
 
 app.get('/start-bot', botController.start);
 

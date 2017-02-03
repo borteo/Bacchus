@@ -128,6 +128,8 @@ exports.instagrammer = ( req, res, next ) => {
     });
 };
 
+
+// not used!
 exports.autofollow = ( req, res, next ) => {
   instagramUserController
     .getUsersAutofollow()
@@ -142,7 +144,7 @@ exports.autolike = ( req, res, next ) => {
   instagramUserController
     .getUsersAutolike()
     .then(function( users ) {
-      likeController.likeUsersMedia( users );
+      likeController.likeUsersMedia( users.slice(0, 5) );
       res.send( "OKAY" );
     })
   ;

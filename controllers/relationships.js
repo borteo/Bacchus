@@ -114,32 +114,21 @@ exports.follow = ( us ) => {
   let users = [].concat( us );
 
   users.forEach(function( user, index ) {
-
-    setTimeout(function() {
-      console.log('following', user.username);
-
-      Client.Relationship.create( session, user.id )
-        .then(function(relationship) {
-          console.log('user followed: ', user.username, relationship.params);
-          saveUser( user, FollowingUser, true );
-      });    
-    }, _.random(2000, 4000) * index);
-
+    QueueWorker.addFollowToQueue( user, index, user.id );
+    saveUser( user, FollowingUser );
   });
+
 };
 
 
 // ------ Private -------
 
-let saveUser = ( user, model, isFollowed ) => {
+let saveUser = ( user, model ) => {
 
   return model.find({ 'id': user.id }, function(err, u) {
     if ( err ) throw err;
     if ( u.length ) {
       console.log(`User ${user.username} already exists`);
-      if ( isFollowed ) {
-        updateInstagramUser( user );
-      }
       return Promise.resolve();
     }
 
@@ -157,25 +146,8 @@ let saveUser = ( user, model, isFollowed ) => {
       console.log(`User ${user.username} created!`);
     });
 
-    // Update Instagram user as well, thus it'll show isFollowed = true
-    
-    if ( isFollowed ) {
-      updateInstagramUser( user );
-    }
-
     Promise.resolve();
   });
   
 };
 
-
-let updateInstagramUser = ( user ) => {
-  InstagramUser.findOneAndUpdate(
-    { 'id': user.id },
-    { $set:{ 'isFollowed': true } },
-    { new: true }, function(err, doc) {
-    if ( err ) {
-      console.log('Something wrong when updating data! -- addLikesToQueue');
-    }
-  });
-};

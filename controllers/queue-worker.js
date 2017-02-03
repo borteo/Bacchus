@@ -41,6 +41,16 @@ queue.process('unfollow', function( job, done ) {
     });
 });
 
+queue.process('follow', function( job, done ) {
+  const user = job.data;
+   Client.Relationship.create( session, user.id )
+      .then(function(relationship) {
+        console.log('user followed: ', user.username, relationship.params);
+        done();
+    })
+  ; 
+});
+
 queue.process('like', function( job, done ) {
   const media = job.data;
   Client
@@ -95,7 +105,7 @@ queue.process('save_user_from_location', function( job, done ) {
 
 exports.addLikesToQueue = ( media, idx, userID ) => {
   let now = new Date();
-  now.setSeconds(now.getSeconds() + _.random(3, 7) * idx);
+  now.setSeconds(now.getSeconds() + _.random(10, 30) * idx);
 
   queue
     .create('like', { id: media.id })
@@ -117,6 +127,32 @@ exports.addLikesToQueue = ( media, idx, userID ) => {
 
     });
 };
+
+
+exports.addFollowToQueue = ( user, idx, userID ) => {
+  let now = new Date();
+  now.setSeconds(now.getSeconds() + _.random(10, 30) * idx);
+
+  queue
+    .create('follow', { id: user.id, username: user.username })
+    .delay( now )
+    .save(function(err) {
+      console.log('error', err);
+
+      if ( !err && userID ) {
+        InstagramUser.findOneAndUpdate(
+          { 'id': user.id },
+          { $set:{ 'isFollowed': true } },
+          { new: true }, function(err, doc) {
+          if ( err ) {
+            console.log('Something wrong when updating data! -- addFollowToQueue');
+          }
+        });
+      }
+    })
+  ;
+};
+
 
 exports.addUsersToQueue = ( user, idx ) => {
   let now = new Date();
