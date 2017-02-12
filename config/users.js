@@ -25,7 +25,9 @@ module.exports = {
   analyzeUsersLimit: 50,
   goodCandidateRatio: 0.85,
   limitLocations: 1,
-  limitLikePages: 5
+  limitLikePages: 5,
+  limitFollows: 15,
+  likePerUser: 7
 };
 
 

@@ -45,7 +45,7 @@ queue.process('follow', function( job, done ) {
   const user = job.data;
    Client.Relationship.create( session, user.id )
       .then(function(relationship) {
-        console.log('user followed: ', user.username, relationship.params);
+        console.log('user followed: ', user.username, new Date().toISOString());
         done();
     })
   ; 
@@ -57,7 +57,7 @@ queue.process('like', function( job, done ) {
     .Like
     .create( session, media.id )
     .then(function( liked ) {
-      console.log('👍  media: ', media.id);
+      console.log('👍  media: ', media.id, new Date().toISOString());
       done();
     })
   ;
@@ -105,7 +105,7 @@ queue.process('save_user_from_location', function( job, done ) {
 
 exports.addLikesToQueue = ( media, idx, userID ) => {
   let now = new Date();
-  now.setSeconds(now.getSeconds() + _.random(10, 30) * idx);
+  now.setSeconds(now.getSeconds() + _.random(13, 15) * idx);
 
   queue
     .create('like', { id: media.id })
@@ -131,7 +131,7 @@ exports.addLikesToQueue = ( media, idx, userID ) => {
 
 exports.addFollowToQueue = ( user, idx, userID ) => {
   let now = new Date();
-  now.setSeconds(now.getSeconds() + _.random(10, 30) * idx);
+  now.setSeconds(now.getSeconds() + _.random(13, 15) * idx);
 
   queue
     .create('follow', { id: user.id, username: user.username })

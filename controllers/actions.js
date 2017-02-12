@@ -12,6 +12,7 @@ const instagramController = require('./instagram');
 
 const Conf = require('../config/users.js');
 
+
 // Views
 exports.getActionsView = ( req, res ) => {
   res.render('actions', {
@@ -144,8 +145,20 @@ exports.autolike = ( req, res, next ) => {
   instagramUserController
     .getUsersAutolike()
     .then(function( users ) {
-      likeController.likeUsersMedia( users.slice(0, 5) );
+
+      console.log('======AUTOLIKE======');
+      console.log(users.length);
+
+      // check users if not available
+      if ( users.length < 1 ) {
+        checkUsers(req, res);
+        return;
+      }
+
+      let size = users.length > Conf.limitFollow ? Conf.limitFollow : users.length;
+      likeController.likeUsersMedia( users.slice(0, size) );
       res.send( "OKAY" );
+      
     })
   ;
 };

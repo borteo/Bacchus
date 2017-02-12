@@ -34,7 +34,7 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const actionsController = require('./controllers/actions');
-const botController = require('./controllers/bot');
+
 
 //const uploadController = require('./controllers/upload');
 
@@ -157,8 +157,6 @@ app.get('/api/autofollow', actionsController.autofollow);
 
 app.get('/api/login-instagram', actionsController.login);
 app.post('/api/unfollow', actionsController.unfollow);
-
-app.get('/start-bot', botController.start);
 
 // Others
 app.get('/api', apiController.getApi);

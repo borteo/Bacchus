@@ -15,7 +15,7 @@ render(<LocationComponent />, document.querySelector('.location-component'));
 render(<LikeFeedComponent />, document.querySelector('.like-feed-component'));
 render(<InstagramUsersComponent />, document.querySelector('.instagram-users-component'));
 render(<FollowFollowersComponent />, document.querySelector('.follow-followers-component'));
-render(<BotComponent />, document.querySelector('.bot-component'));
+
 render(<UnfollowComponent />, document.querySelector('.unfollow-component'));
 
 render(<InstagramToolsComponent />, document.querySelector('.instagram-tools-component'));
