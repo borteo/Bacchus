@@ -148,13 +148,13 @@ exports.autolike = ( req, res ) => {
     .then(function( users ) {
 
       console.log('======AUTOLIKE======');
-      console.log(users.length);
+      console.log('available users:', users.length);
 
       // check users if not available
       // wait 3s * UsersLimit -> then likes media
       if ( users.length < 5 ) {
         instagramUserController.checkInstagramUsers();
-        
+
         setTimeout(function() {
           likeUsersMedia( users );
         }, Conf.analyzeUsersLimit * 3000);

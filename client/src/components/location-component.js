@@ -83,7 +83,6 @@ export default class LocationComponent extends Component {
         <Tools
           checkUsers={this.checkUsers.bind(this)}
           autolike={this.autolike.bind(this)}
-          autofollow={this.autofollow.bind(this)}
           deleteAll={this.deleteAll.bind(this)}
         />
       </div>

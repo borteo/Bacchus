@@ -1834,7 +1834,6 @@ var LocationComponent = function (_Component) {
         h(Tools, {
           checkUsers: this.checkUsers.bind(this),
           autolike: this.autolike.bind(this),
-          autofollow: this.autofollow.bind(this),
           deleteAll: this.deleteAll.bind(this)
         })
       );
