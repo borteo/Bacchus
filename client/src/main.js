@@ -5,7 +5,6 @@ import LikeFeedComponent from './components/like-feed-component';
 import UnfollowComponent from './components/unfollow-component';
 import InstagramUsersComponent from './components/instagram-users-component';
 import FollowFollowersComponent from './components/follow-followers-component';
-import BotComponent from './components/bot-component';
 import InstagramToolsComponent from './components/instagram-tools-component';
 
 

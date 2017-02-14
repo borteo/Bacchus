@@ -185,13 +185,6 @@ var NON_DIMENSION_PROPS = {
 // DOM event types that do not bubble and should be attached via useCapture
 var NON_BUBBLING_EVENTS = { blur: 1, error: 1, focus: 1, load: 1, resize: 1, scroll: 1 };
 
-/** Create an Event handler function that sets a given state property.
- *	@param {Component} component	The component whose state should be updated
- *	@param {string} key				A dot-notated key path to update in the component's state
- *	@param {string} eventPath		A dot-notated key path to the value that should be retrieved from the Event or component
- *	@returns {function} linkedStateHandler
- *	@private
- */
 function createLinkedState(component, key, eventPath) {
 	var path = key.split('.');
 	return function (e) {
@@ -208,9 +201,6 @@ function createLinkedState(component, key, eventPath) {
 	};
 }
 
-/** Managed queue of dirty components to be re-rendered */
-
-// items/itemsOffline swap on each rerender() call (just a simple pool technique)
 var items = [];
 
 function enqueueRender(component) {
@@ -228,12 +218,6 @@ function rerender() {
 	}
 }
 
-/** Check if a VNode is a reference to a stateless functional component.
- *	A function component is represented as a VNode whose `nodeName` property is a reference to a function.
- *	If that function is not a Component (ie, has no `.render()` method on a prototype), it is considered a stateless functional component.
- *	@param {VNode} vnode	A VNode
- *	@private
- */
 function isFunctionalComponent(vnode) {
   var nodeName = vnode && vnode.nodeName;
   return nodeName && isFunction(nodeName) && !(nodeName.prototype && nodeName.prototype.render);
@@ -247,11 +231,6 @@ function buildFunctionalComponent(vnode, context) {
   return vnode.nodeName(getNodeProps(vnode), context || EMPTY);
 }
 
-/** Check if two nodes are equivalent.
- *	@param {Element} node
- *	@param {VNode} vnode
- *	@private
- */
 function isSameNodeType(node, vnode) {
 	if (isString(vnode)) {
 		return node instanceof Text;
@@ -420,7 +399,6 @@ var set = function set(object, property, value, receiver) {
   return value;
 };
 
-/** Removes a given DOM Node from its parent. */
 function removeNode(node) {
 	var p = node.parentNode;
 	if (p) p.removeChild(node);
@@ -502,8 +480,6 @@ function eventProxy(e) {
 	return this._listeners[e.type](options.event && options.event(e) || e);
 }
 
-/** DOM node pool, keyed on nodeName. */
-
 var nodes = {};
 
 function collectNode(node) {
@@ -524,7 +500,6 @@ function createNode(nodeName, isSvg) {
 	return node;
 }
 
-/** Queue of components that have been mounted and are awaiting componentDidMount */
 var mounts = [];
 
 /** Diff recursion count, used to track the end of the diff cycle. */
@@ -823,10 +798,6 @@ function diffAttributes(dom, attrs, old) {
 	}
 }
 
-/** Retains a pool of Components for re-use, keyed on component name.
- *	Note: since component names are not unique or even necessarily available, these are primarily a form of sharding.
- *	@private
- */
 var components = {};
 
 function collectComponent(component) {
@@ -851,12 +822,6 @@ function createComponent(Ctor, props, context) {
 	return inst;
 }
 
-/** Set a component's `props` (generally derived from JSX attributes).
- *	@param {Object} props
- *	@param {Object} [opts]
- *	@param {boolean} [opts.renderSync=false]	If `true` and {@link options.syncComponentUpdates} is `true`, triggers synchronous rendering.
- *	@param {boolean} [opts.render=true]			If `false`, no render will be triggered.
- */
 function setComponentProps(component, props, opts, context, mountAll) {
 	if (component._disable) return;
 	component._disable = true;
@@ -1111,16 +1076,6 @@ function unmountComponent(component, remove) {
 	if (component.componentDidUnmount) component.componentDidUnmount();
 }
 
-/** Base Component class, for he ES6 Class method of creating Components
- *	@public
- *
- *	@example
- *	class MyFoo extends Component {
- *		render(props, state) {
- *			return <div />;
- *		}
- *	}
- */
 function Component(props, context) {
 	/** @private */
 	this._dirty = true;
@@ -1206,21 +1161,6 @@ extend(Component.prototype, {
 	render: function render() {}
 });
 
-/** Render JSX into a `parent` Element.
- *	@param {VNode} vnode		A (JSX) VNode to render
- *	@param {Element} parent		DOM element to render into
- *	@param {Element} [merge]	Attempt to re-use an existing DOM tree rooted at `merge`
- *	@public
- *
- *	@example
- *	// render a div into <body>:
- *	render(<div id="hello">hello!</div>, document.body);
- *
- *	@example
- *	// render a "Thing" component into #foo:
- *	const Thing = ({ name }) => <span>{ name }</span>;
- *	render(<Thing name="one" />, document.querySelector('#foo'));
- */
 function render$1(vnode, parent, merge) {
   return diff(merge, vnode, {}, false, parent);
 }
@@ -1783,16 +1723,6 @@ var Tools = function (_Component) {
   createClass(Tools, [{
     key: "render",
     value: function render() {
-
-      /*
-          <!button
-                class="btn btn-primary"
-                onClick={ this.props.autofollow }
-              >
-                Autofollow
-              </button>
-      */
-
       return h(
         "div",
         { "class": "form-inline" },
@@ -1811,6 +1741,14 @@ var Tools = function (_Component) {
             onClick: this.props.autolike
           },
           "Autolike"
+        ),
+        h(
+          "button",
+          {
+            "class": "btn btn-secondary",
+            onClick: this.props.deleteAll
+          },
+          "Delete All"
         )
       );
     }
@@ -1861,21 +1799,18 @@ var LocationComponent = function (_Component) {
     value: function autolike() {
       var that = this;
       fetch('/api/autolike').then(function (response) {
-        return response.json();
-      }).then(function (json) {
-        console.log('parsed json', json);
+        console.log('response', response);
       }).catch(function (ex) {
         console.log('parsing failed', ex);
       });
     }
   }, {
-    key: 'autofollow',
-    value: function autofollow() {
+    key: 'deleteAll',
+    value: function deleteAll() {
       var that = this;
-      fetch('/api/autofollow').then(function (response) {
-        return response.json();
-      }).then(function (json) {
-        console.log('parsed json', json);
+      fetch('/api/delete-all').then(function (response) {
+        // reload page
+        window.location.reload();
       }).catch(function (ex) {
         console.log('parsing failed', ex);
       });
@@ -1899,7 +1834,8 @@ var LocationComponent = function (_Component) {
         h(Tools, {
           checkUsers: this.checkUsers.bind(this),
           autolike: this.autolike.bind(this),
-          autofollow: this.autofollow.bind(this)
+          autofollow: this.autofollow.bind(this),
+          deleteAll: this.deleteAll.bind(this)
         })
       );
     }
@@ -12007,37 +11943,6 @@ var UnfollowComponent$2 = function (_Component) {
     }
   }]);
   return UnfollowComponent;
-}(Component);
-
-var botComponent = function (_Component) {
-  inherits(botComponent, _Component);
-
-  function botComponent() {
-    classCallCheck(this, botComponent);
-    return possibleConstructorReturn(this, (botComponent.__proto__ || Object.getPrototypeOf(botComponent)).call(this));
-  }
-
-  createClass(botComponent, [{
-    key: 'startBot',
-    value: function startBot() {
-      var that = this;
-
-      fetch('start-bot').then(function (resp) {}).then(function (a) {});
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return h(
-        'button',
-        {
-          'class': 'btn btn-primary',
-          onClick: this.startBot.bind(this)
-        },
-        'Start Bot'
-      );
-    }
-  }]);
-  return botComponent;
 }(Component);
 
 var InstagramToolsComponent = function (_Component) {

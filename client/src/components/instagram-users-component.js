@@ -1,10 +1,6 @@
 import { h, Component } from 'preact';
 import 'whatwg-fetch';
 
-import Location from './location';
-import Tools from './tools';
-
-
 export default class InstagramUsersComponent extends Component {
   constructor() {
     super();

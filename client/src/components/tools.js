@@ -7,16 +7,6 @@ export default class Tools extends Component {
   }
 
   render() {
-
-/*
-    <!button
-          class="btn btn-primary"
-          onClick={ this.props.autofollow }
-        >
-          Autofollow
-        </button>
-*/
-
     return (
       <div class="form-inline">
         <button
@@ -31,6 +21,13 @@ export default class Tools extends Component {
           onClick={ this.props.autolike }
         >
           Autolike
+        </button>
+
+        <button
+          class="btn btn-secondary"
+          onClick={ this.props.deleteAll }
+        >
+          Delete All
         </button>
       </div>
       

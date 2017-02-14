@@ -154,6 +154,7 @@ app.get('/api/save-connections', actionsController.saveConnections);
 app.get('/api/instagrammer/:username', actionsController.instagrammer);
 app.get('/api/autolike', actionsController.autolike);
 app.get('/api/autofollow', actionsController.autofollow);
+app.get('/api/delete-all', actionsController.deleteAll);
 
 app.get('/api/login-instagram', actionsController.login);
 app.post('/api/unfollow', actionsController.unfollow);

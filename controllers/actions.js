@@ -141,7 +141,8 @@ exports.autofollow = ( req, res, next ) => {
   ;
 };
 
-exports.autolike = ( req, res, next ) => {
+exports.autolike = ( req, res ) => {
+
   instagramUserController
     .getUsersAutolike()
     .then(function( users ) {
@@ -150,15 +151,34 @@ exports.autolike = ( req, res, next ) => {
       console.log(users.length);
 
       // check users if not available
-      if ( users.length < 1 ) {
-        checkUsers(req, res);
-        return;
+      // wait 3s * UsersLimit -> then likes media
+      if ( users.length < 5 ) {
+        instagramUserController.checkInstagramUsers();
+        
+        setTimeout(function() {
+          likeUsersMedia( users );
+        }, Conf.analyzeUsersLimit * 3000);
+
+        return res.send( media );
       }
 
-      let size = users.length > Conf.limitFollow ? Conf.limitFollow : users.length;
-      likeController.likeUsersMedia( users.slice(0, size) );
-      res.send( "OKAY" );
-      
+      likeUsersMedia( users );
+      res.send( media );
+
+    })
+  ;
+};
+
+likeUsersMedia = ( users ) => {
+  let size = users.length > Conf.limitFollow ? Conf.limitFollow : users.length;
+  likeController.likeUsersMedia( users.slice(0, size) );
+};
+
+exports.deleteAll = ( req, res ) => {
+  instagramUserController
+    .deleteAll()
+    .then(function() {
+      res.send('Instagram users removed');
     })
   ;
 };

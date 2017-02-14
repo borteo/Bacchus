@@ -35,6 +35,8 @@ exports.getInstagramUsers = () => {
 
 // get Instagram User not updated yet
 exports.checkInstagramUsers = () => {
+  console.log('====CHECK INSTAGRAM USERS====');
+  
   InstagramUser.find({ isPrivate: false, isUpdated: false })
     .sort({'username': 1})
     .exec( function(err, users) {
@@ -51,7 +53,6 @@ exports.checkInstagramUsers = () => {
 exports.instagrammer = ( username ) => {
   return Client.Account.searchForUser(session, username);
 };
-
 
 exports.saveInstagramUsers = ( usersData ) => {
   let users = [].concat( usersData || [] );
@@ -88,8 +89,7 @@ exports.saveInstagramUsers = ( usersData ) => {
       return Promise.resolve();
     });
   });
-
-}
+};
 
 exports.getUsersAutolike = () => {
   return InstagramUser.find({ isPrivate: false, isGoodCandidate: true, isLiked: false, isFollowed: false })
@@ -102,7 +102,6 @@ exports.getUsersAutolike = () => {
     })
   ;
 };
-
 
 exports.getUsersAutofollow = () => {
   return InstagramUser.find({ isPrivate: false, isGoodCandidate: true, isLiked: true, isFollowed: false})
@@ -117,6 +116,13 @@ exports.getUsersAutofollow = () => {
 };
 
 
+exports.deleteAll = () => {
+  return InstagramUser.remove({}, function(err) { 
+    console.log('collection InstagramUser removed') ;
+    Promise.resolve();
+  });
+};
+
 // Private Methods
 
 checkNewUsers = ( newUsers ) => {
@@ -130,7 +136,7 @@ checkNewUsers = ( newUsers ) => {
         goodCandidate( data.params.id, data.params.followingCount, data.params.followerCount );
       });
 
-    }, _.random(2000, 4000) * index);
+    }, _.random(2000, 3000) * index);
   });
 };
 

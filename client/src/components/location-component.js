@@ -47,23 +47,22 @@ export default class LocationComponent extends Component {
     let that = this;
     fetch('/api/autolike')
       .then(function( response ) {
-        return response.json();
-      }).then(function(json) {
-        console.log('parsed json', json);
-      }).catch(function(ex) {
+         console.log('response', response);
+      })
+      .catch(function(ex) {
         console.log('parsing failed', ex);
       })
     ;
   }
 
-  autofollow() {
+  deleteAll() {
     let that = this;
-    fetch('/api/autofollow')
+    fetch('/api/delete-all')
       .then(function( response ) {
-        return response.json();
-      }).then(function(json) {
-        console.log('parsed json', json);
-      }).catch(function(ex) {
+        // reload page
+        window.location.reload();
+      })
+      .catch(function(ex) {
         console.log('parsing failed', ex);
       })
     ;
@@ -85,6 +84,7 @@ export default class LocationComponent extends Component {
           checkUsers={this.checkUsers.bind(this)}
           autolike={this.autolike.bind(this)}
           autofollow={this.autofollow.bind(this)}
+          deleteAll={this.deleteAll.bind(this)}
         />
       </div>
     );
